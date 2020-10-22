@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <h1>{{ current_user.username }}</h1>
+    {% endif %}
+    {% for user in users %}
+        {{ user.username }}
+    {% endfor %}
+{% endblock %}
