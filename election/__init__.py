@@ -21,7 +21,9 @@ def create_app(config_class=Config):
 
     from election.main.routes import main
     from election.users.routes import users
+    from election.candidates.routes import candidates
     app.register_blueprint(main)
     app.register_blueprint(users)
+    app.register_blueprint(candidates)
 
     return app

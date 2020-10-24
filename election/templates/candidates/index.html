@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Imię</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Głosy</th>
+                <th scope="col" colspan="2">Opcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for candidate in candidates %}
+                <tr>
+                    <th scope="row">{{ candidate.id }}</th>
+                    <td>{{ candidate.first_name }}</td>
+                    <td>{{ candidate.surname }}</td>
+                    <td>{{ candidate.votes }}</td>
+                    <td><a href="{{ url_for('candidates.update', id=candidate.id) }}">Edytuj</a></td>
+                    <td><a href="{{ url_for('candidates.delete', id=candidate.id) }}">Usuń</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

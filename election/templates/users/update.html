@@ -1,9 +1,9 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 {% block content %}
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Zarejestruj się</legend>
+            <legend class="border-bottom mb-4">Edytuj użytkownika</legend>
             <div class="form-group">
                 {{ form.username.label(class="form-control-label") }}
                 {{ form.username(class="form-control form-control-lg") }}
@@ -11,6 +11,14 @@
             <div class="form-group">
                 {{ form.password.label(class="form-control-label") }}
                 {{ form.password(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.voted.label(class="form-control-label") }}
+                {{ form.voted(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.admin.label(class="form-control-label") }}
+                {{ form.admin(class="form-control form-control-lg") }}
             </div>
         </fieldset>
         <div class="form-group">

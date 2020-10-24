@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Głos oddany</th>
+                <th scope="col">Admin</th>
+                <th scope="col" colspan="2">Opcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.id }}</th>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.voted }}</td>
+                    <td>{{ user.admin }}</td>
+                    <td><a href="{{ url_for('users.update', id=user.id) }}">Edytuj</a></td>
+                    <td><a href="{{ url_for('users.delete', id=user.id) }}">Usuń</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
