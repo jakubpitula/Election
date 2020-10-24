@@ -13,7 +13,7 @@ def create():
         candidate = Candidate(first_name=form.first_name.data, surname=form.surname.data, votes=0)
         db.session.add(candidate)
         db.session.commit()
-        flash('Kandydat został utworzony.')
+        flash('Kandydat został utworzony.', 'success')
         return redirect(url_for('candidates.index'))
     return render_template('candidates/create.html', form=form)
 
