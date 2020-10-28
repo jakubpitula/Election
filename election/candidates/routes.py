@@ -2,11 +2,13 @@ from flask import Blueprint, flash, redirect, render_template, url_for, request
 from election.models import Candidate
 from election.candidates.forms import CreateForm, UpdateForm
 from election import db
+from election.utils import admin_required
 
 candidates = Blueprint('candidates', __name__)
 
 
 @candidates.route('/candidates/create', methods=['GET', 'POST'])
+@admin_required
 def create():
     form = CreateForm()
     if form.validate_on_submit():
@@ -19,12 +21,14 @@ def create():
 
 
 @candidates.route('/candidates', methods=['GET'])
+@admin_required
 def index():
     all_candidates = Candidate.query.all()
     return render_template('candidates/index.html', candidates=all_candidates)
 
 
 @candidates.route('/candidates/<id>/update', methods=['GET', 'POST'])
+@admin_required
 def update(id):
     form = UpdateForm()
     candidate = Candidate.query.get(id)
@@ -44,6 +48,7 @@ def update(id):
 
 
 @candidates.route('/candidates/<id>/delete', methods=['GET'])
+@admin_required
 def delete(id):
     candidate = Candidate.query.get(id)
     if not candidate:

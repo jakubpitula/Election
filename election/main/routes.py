@@ -7,17 +7,17 @@ from election import db
 main = Blueprint('main', __name__)
 
 
-@main.route('/')
 @main.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', title='Dzień dobry')
 
 
 @main.route('/voted')
 def voted():
-    return render_template('home.html')
+    return render_template('voted.html', title='Dziękujemy')
 
 
+@main.route('/')
 @main.route('/vote', methods=['GET', 'POST'])
 @login_required
 def vote():
@@ -32,7 +32,7 @@ def vote():
     form.candidate.choices = choices
     if user.voted:
         flash('Nie możesz zagłosować więcej niż jeden raz.', 'danger')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.voted'))
     if form.validate_on_submit():
         user.voted = True
         ejected = Candidate.query.get(form.candidate.data)

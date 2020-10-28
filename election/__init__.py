@@ -13,8 +13,11 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    bcrypt.init_app(app)
     login_manager.init_app(app)
+    login_manager.login_view = 'users.login'
+    login_manager.login_message = 'Musisz się zalogować, żeby mieć dostęp do tej strony.'
+
+    bcrypt.init_app(app)
     db.init_app(app)
     with app.app_context():
         db.create_all()
