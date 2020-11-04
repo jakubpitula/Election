@@ -62,12 +62,14 @@ def login():
             login_user(user)
             flash('Zalogowano.', 'success')
             next_page = request.args.get('next')
-
             return redirect(next_page) if next_page else redirect(url_for('main.voted'))
+        else:
+            flash('Nieprawidłowe dane logowania.', 'danger')
     return render_template('login.html', form=form)
 
 
 @users.route('/create', methods=['GET', 'POST'])
+@login_required
 @admin_required
 def register():
     form = RegistrationForm()
