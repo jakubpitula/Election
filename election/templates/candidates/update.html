@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <form action="" method="post">
+    <form action="" method="post" class="cbp-mc-form">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Edytuj kandydata</legend>
@@ -17,8 +17,8 @@
                 {{ form.votes(class="form-control form-control-lg") }}
             </div>
         </fieldset>
-        <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+        <div class="cbp-mc-submit-wrap">
+                {{ form.submit(class="cbp-mc-submit") }}
         </div>
     </form>
 {% endblock %}

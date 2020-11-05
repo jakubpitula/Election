@@ -1,15 +1,38 @@
 {% extends 'layout.html' %}
+{% block head %}
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .radio > label{
+            text-align: left;
+            font-size: 1em;
+        }
+        .radio > label > input{
+            display: inline;
+            width: 15%;
+            float: left;
+            margin: 5px 0 0;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <form action="" method="post" class="cbp-mc-form">
         {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <div class="form-group">
-                    {{ form.candidate.label(class="form-control-label") }}
-                    {{ form.candidate(class="form-control form-control-lg") }}
+            <div style="text-align: center">
+                <strong style="font-size: 1.2em">{{ form.candidate.label(class="form-control-label") }}</strong>
+                <div style="width: 230px; margin: auto;">
+                    {% for value, name in values|zip(names) %}
+                        <div class="radio">
+                            <label><input type="radio" name="candidate" value="{{ value }}">{{ name }}</label>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info") }}
+                <div class="cbp-mc-submit-wrap">
+                        {{ form.submit(class="cbp-mc-submit") }}
                 </div>
-            </fieldset>
+            </div>
     </form>
 {% endblock %}

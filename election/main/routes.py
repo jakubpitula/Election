@@ -26,10 +26,15 @@ def vote():
     form = VoteForm()
 
     choices = []
+    values = []
+    names = []
     for candidate in candidates:
         choices.append((candidate.id, candidate.first_name + ' ' + candidate.surname))
+        values.append(candidate.id)
+        names.append(candidate.first_name + ' ' + candidate.surname)
 
     form.candidate.choices = choices
+
     if user.voted:
         flash('Nie możesz zagłosować więcej niż jeden raz.', 'danger')
         return redirect(url_for('main.voted'))
@@ -39,4 +44,4 @@ def vote():
         ejected.votes += 1
         db.session.commit()
         return redirect(url_for('main.voted'))
-    return render_template('vote.html', form=form, title='Głosowanie')
+    return render_template('vote.html', form=form, values=values, names=names, title='Głosowanie')

@@ -18,7 +18,6 @@
                     <td>{{ candidate.surname }}</td>
                     <td>{{ candidate.votes }}</td>
                     <td><a href="{{ url_for('candidates.update', id=candidate.id) }}">Edytuj</a></td>
-                    <td><a href="{{ url_for('candidates.delete', id=candidate.id) }}">Usuń</a></td>
                 </tr>
             {% endfor %}
         </tbody>
