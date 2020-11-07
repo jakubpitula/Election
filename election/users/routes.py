@@ -51,18 +51,18 @@ def delete(id):
     return redirect(url_for('users.index'))
 
 
+@users.route('/', methods=['GET', 'POST'])
 @users.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.voted'))
+        return redirect(url_for('main.vote'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            flash('Zalogowano.', 'success')
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.voted'))
+            return redirect(next_page) if next_page else redirect(url_for('main.vote'))
         else:
             flash('Nieprawidłowe dane logowania.', 'danger')
     return render_template('login.html', form=form)
@@ -86,4 +86,4 @@ def register():
 @users.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('main.voted'))
+    return redirect(url_for('users.login'))

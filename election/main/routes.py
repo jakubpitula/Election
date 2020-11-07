@@ -17,7 +17,6 @@ def voted():
     return render_template('voted.html', title='Dziękujemy')
 
 
-@main.route('/')
 @main.route('/vote', methods=['GET', 'POST'])
 @login_required
 def vote():
@@ -35,10 +34,10 @@ def vote():
 
     form.candidate.choices = choices
 
-    if user.voted:
+    if user.voted and not user.admin:
         flash('Nie możesz zagłosować więcej niż jeden raz.', 'danger')
-        return redirect(url_for('main.voted'))
-    if form.validate_on_submit():
+        return redirect(url_for('users.logout'))
+    if form.validate_on_submit() and not user.voted:
         user.voted = True
         ejected = Candidate.query.get(form.candidate.data)
         ejected.votes += 1

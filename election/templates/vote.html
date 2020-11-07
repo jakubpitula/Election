@@ -22,11 +22,11 @@
     <form action="" method="post" class="cbp-mc-form">
         {{ form.hidden_tag() }}
             <div style="text-align: center">
-                <strong style="font-size: 1.2em">{{ form.candidate.label(class="form-control-label") }}</strong>
+                <strong style="font-size: 1.2em">{{ form.candidate.label(class="form-control-label", style="cursor: default") }}</strong>
                 <div style="width: 230px; margin: auto;">
                     {% for value, name in values|zip(names) %}
-                        <div class="radio">
-                            <label><input type="radio" name="candidate" value="{{ value }}">{{ name }}</label>
+                        <div class="radio mt-5 mb-5">
+                            <label style="padding-top: 5px; margin-bottom: 0"><input type="radio" name="candidate" value="{{ value }}">{{ name }}</label>
                         </div>
                     {% endfor %}
                 </div>
