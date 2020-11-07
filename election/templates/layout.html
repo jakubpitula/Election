@@ -34,7 +34,6 @@
         {% if current_user.admin %}
             <a href="{{ url_for('users.register') }}">Nowy użytkownik</a>
             <a href="{{ url_for('users.index') }}">Lista użytkowników</a>
-            <a href="{{ url_for('candidates.create') }}">Nowy kandydat</a>
             <a href="{{ url_for('candidates.index') }}">Lista kandydatów</a>
         {% endif %}
     </nav>

@@ -14,5 +14,5 @@ from election.models import Candidate
 
 class VoteForm(FlaskForm):
 
-    candidate = RadioField('Wybierz jednego z kandydatów.', validators=[DataRequired()])
+    candidate = RadioField('Wybierz jednego z kandydatów.', validators=[DataRequired(message='Musisz wybrać kandydata.')])
     submit = SubmitField('Zagłosuj')

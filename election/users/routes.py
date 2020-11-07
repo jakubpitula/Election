@@ -20,7 +20,7 @@ def index():
 @admin_required
 def update(id):
     form = UpdateForm()
-    user = User.query.get(id)
+    user = User.query.filter_by(id=id).first_or_404()
 
     if form.validate_on_submit():
         user.username = form.username.data
@@ -41,7 +41,7 @@ def update(id):
 @users.route('/users/<id>/delete', methods=['GET'])
 @admin_required
 def delete(id):
-    user = User.query.get(id)
+    user = User.query.filter_by(id=id).first_or_404()
     if not user:
         flash('Użytkownik nieznaleziony', 'danger')
         return redirect(url_for('users.index'))

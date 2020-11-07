@@ -33,6 +33,9 @@
                 <div class="cbp-mc-submit-wrap">
                         {{ form.submit(class="cbp-mc-submit") }}
                 </div>
+                {% for error in form.candidate.errors %}
+                    <p style="color: red; padding-top: 10px">{{ error }}</p>
+                {% endfor %}
             </div>
     </form>
 {% endblock %}

@@ -32,6 +32,9 @@ def index():
 def update(id):
     form = UpdateForm()
     candidate = Candidate.query.get(id)
+    if not candidate:
+        flash('Kandydat nieznaleziony', 'danger')
+        return redirect(url_for('candidates.index'))
 
     if form.validate_on_submit():
         candidate.first_name = form.first_name.data
