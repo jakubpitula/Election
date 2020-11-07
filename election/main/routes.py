@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from election.models import Candidate
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 from election.main.forms import VoteForm
 from election import db
 
@@ -42,5 +42,6 @@ def vote():
         ejected = Candidate.query.get(form.candidate.data)
         ejected.votes += 1
         db.session.commit()
+        logout_user()
         return redirect(url_for('main.voted'))
     return render_template('vote.html', form=form, values=values, names=names, title='Głosowanie')
