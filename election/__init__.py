@@ -3,10 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from election.config import Config
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail
 
 login_manager = LoginManager()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
+mail = Mail()
 
 
 def create_app(config_class=Config):
@@ -18,6 +20,7 @@ def create_app(config_class=Config):
     login_manager.login_view = 'users.login'
     login_manager.login_message = 'Musisz się zalogować, żeby mieć dostęp do tej strony.'
 
+    mail.init_app(app)
     bcrypt.init_app(app)
     db.init_app(app)
     with app.app_context():

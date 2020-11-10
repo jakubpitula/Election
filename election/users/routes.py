@@ -1,10 +1,16 @@
-from flask import Blueprint, flash, request, abort, redirect, render_template, url_for
+from flask import Blueprint, flash, request, redirect, render_template, url_for
 from election.users.forms import LoginForm, RegistrationForm, UpdateForm
 from flask_login import login_user, current_user, logout_user, login_required
 from election.models import User
 from election import bcrypt, db
 from election.utils import admin_required
-from is_safe_url import is_safe_url
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from os.path import join, dirname, realpath
+import random
+import string
+import smtplib
+import os
 
 users = Blueprint('users', __name__)
 
@@ -81,6 +87,61 @@ def register():
         flash('Użytkownik został utworzony.')
         return redirect(url_for('main.voted'))
     return render_template('users/create.html', form=form)
+
+
+def get_randoms(length):
+    letters_and_digits = string.ascii_letters + string.digits
+    result_str = ''.join((random.choice(letters_and_digits) for i in range(length)))
+    return result_str
+
+
+def send_emails(mails, logins, passwords, s):
+    for email, login, password in zip(mails, logins, passwords):
+        msg = MIMEMultipart()
+        msg['From'] = os.getenv('SENDER_MAIL')
+        msg['To'] = email
+        msg['Subject'] = 'Wybory SzRU 2020 - dane do logowania'
+        msg.attach(MIMEText('Wykorzystaj poniższy login i hasło, aby zagłosować w wyborach SzRU.\n'
+                            f'Login: {login}\n'
+                            f'Hasło: {password}'))
+        s.send_message(msg)
+        del msg
+
+
+@users.route('/users/add', methods=['GET'])
+@login_required
+@admin_required
+def add():
+    s = smtplib.SMTP(host=os.getenv('MAIL_HOST'), port=os.getenv('MAIL_PORT'))
+    s.starttls()
+    s.login(os.getenv('SENDER_MAIL'), os.getenv('SENDER_PASSWORD'))
+
+    path = join(dirname(realpath(__file__)))
+
+    with open(path + '/list.txt') as f:
+        mails = [line.strip() for line in f]
+
+    logins, passwords = [], []
+    for i in range(len(mails)):
+        login = get_randoms(8)
+        while login in logins:
+            login = get_randoms(8)
+        logins.append(login)
+
+        password = get_randoms(12)
+        while password in passwords:
+            password = get_randoms(12)
+        passwords.append(password)
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = User(username=login, password=hashed_password, admin=False, voted=False)
+        db.session.add(user)
+    db.session.commit()
+
+    send_emails(mails, logins, passwords, s)
+
+    flash('Dodano użytkowników', 'success')
+    return redirect(url_for('users.index'))
 
 
 @users.route('/logout')
