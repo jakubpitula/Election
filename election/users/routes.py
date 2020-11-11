@@ -98,7 +98,7 @@ def get_randoms(length):
 def send_emails(mails, logins, passwords, s):
     for email, login, password in zip(mails, logins, passwords):
         msg = MIMEMultipart()
-        msg['From'] = os.getenv('SENDER_MAIL')
+        msg['From'] = os.environ.get('SENDER_MAIL')
         msg['To'] = email
         msg['Subject'] = 'Wybory SzRU 2020 - dane do logowania'
         msg.attach(MIMEText('Wykorzystaj poniższy login i hasło, aby zagłosować w wyborach SzRU.\n'
@@ -112,9 +112,9 @@ def send_emails(mails, logins, passwords, s):
 @login_required
 @admin_required
 def add():
-    s = smtplib.SMTP(host=os.getenv('MAIL_HOST'), port=os.getenv('MAIL_PORT'))
+    s = smtplib.SMTP(host=os.environ.get('MAIL_HOST'), port=os.environ.get('MAIL_PORT'))
     s.starttls()
-    s.login(os.getenv('SENDER_MAIL'), os.getenv('SENDER_PASSWORD'))
+    s.login(os.environ.get('SENDER_MAIL'), os.environ.get('SENDER_PASSWORD'))
 
     path = join(dirname(realpath(__file__)))
 
